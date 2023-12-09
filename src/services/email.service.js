@@ -6,7 +6,7 @@ export const robotService = {
 
 }
 
-const loggedinUser = { email: 'user@appsus.com', fullname: 'Mahatma Appsus' }
+const loggedinUser = { email: 'yuvalno@gmail.com', fullname: 'Yuval Neumann' }
 
 const STORAGE_KEY = 'emails'
 
@@ -14,14 +14,15 @@ const STORAGE_KEY = 'emails'
 _createEmails()
 
 async function query(filterBy) {
-    const robots = await storageService.query(STORAGE_KEY)
+    const emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
-        var { type, maxBatteryStatus, minBatteryStatus, model } = filterBy
-        maxBatteryStatus = maxBatteryStatus || Infinity
-        minBatteryStatus = minBatteryStatus || 0
-        robots = robots.filter(robot => robot.type.toLowerCase().includes(type.toLowerCase()) && robot.model.toLowerCase().includes(model.toLowerCase())
-            && (robot.batteryStatus < maxBatteryStatus)
-            && robot.batteryStatus > minBatteryStatus)
+        var { status, txt, isRead } = filterBy
+        status = status || 'Inbox'
+        txt = txt || ''
+        isRead = isRead || false
+        const regexTxtTerm = new RegExp(txt, 'i')
+        emails = emails.filter(email=> 
+          regexTxtTerm.test(email.body))
     }
     return emails
 }
@@ -34,20 +35,28 @@ function remove(id) {
     return storageService.remove(STORAGE_KEY, id)
 }
 
-function save(robotToSave) {
+function save(emailToSave) {
     if (robotToSave.id) {
-        return storageService.put(STORAGE_KEY, robotToSave)
+        return storageService.put(STORAGE_KEY, emailToSave)
     } else {
         robotToSave.isOn = false
-        return storageService.post(STORAGE_KEY, robotToSave)
+        return storageService.post(STORAGE_KEY, emailToSave)
     }
 }
 
-function createEmail(model = '', type = '', batteryStatus = 100) {
+function createEmail(subject = '', body = '', isRead = false,
+                     isStarred = false, sentAt=Date.now(), 
+                     removedAt=  null, from = 'yuvalno@gmail.com' ,
+                     to= 'yuvalno@gmail.com') {
     return {
-        model,
-        batteryStatus,
-        type
+              subject,
+              body,
+              isRead,
+              isStarred,
+              sentAt,
+              removedAt,
+              from,
+              to 
     }
 }
 
@@ -71,7 +80,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332648,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               },
               {
@@ -82,7 +91,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332649,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               },
               {
@@ -93,7 +102,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332650,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               },
               {
@@ -104,7 +113,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332651,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               },
               {
@@ -115,7 +124,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332652,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               },
               {
@@ -126,7 +135,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332653,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               },
               {
@@ -137,7 +146,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332654,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               },
               {
@@ -148,7 +157,7 @@ function _createEmails() {
                 isStarred: false,
                 sentAt: 1702094332655,
                 removedAt: null,
-                from: 'momo@momo.com',
+                from: 'giti@gitimomo.com',
                 to: 'yuvalno@gmail.com'
               }                     
             
