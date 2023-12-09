@@ -6,7 +6,7 @@ export const robotService = {
 
 
 
-const loggedinUser = { email: 'user@appsus.com', fullname: 'Mahatma Appsus' }
+const loggedinUser = { email: 'yuvalno@gmail.com', fullname: 'Yuval Neumann' }
 
 
 function GetloggedinUser()
