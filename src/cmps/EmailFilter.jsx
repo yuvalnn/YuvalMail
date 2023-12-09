@@ -5,10 +5,7 @@ import { useState , useEffect} from "react"
 export function EmailFilter({filterBy, onSetFilter}) {
 const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
 
-       //console.log(filterByToEdit)
-       
-       console.log(filterBy)
-       console.log("onSetFilter prop:", onSetFilter)
+      
        function handleChange(ev)
        {
         let { name: field, value } = ev.target
