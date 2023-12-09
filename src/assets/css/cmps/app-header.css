@@ -7,7 +7,7 @@
 .app-header section.container {
     display: flex;
     align-items: center;
-
+    justify-content: space-between;
 }
 
 .app-header h1.logo {

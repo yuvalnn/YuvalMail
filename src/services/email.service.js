@@ -1,8 +1,13 @@
 import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
-export const robotService = {
-    getDefaultFilter
+export const emailService = {
+  query,
+  save,
+  remove,
+  getById,
+  createEmail,
+  getDefaultFilter
 
 }
 
