@@ -1,0 +1,18 @@
+.AboutUs {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .AboutUs h1 {
+    font-size: 2.5em;
+    color: #333;
+  }
+  
+  .AboutUs p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #555;
+    margin-top: 15px;
+  }
