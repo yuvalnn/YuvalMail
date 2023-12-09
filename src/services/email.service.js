@@ -19,7 +19,7 @@ const STORAGE_KEY = 'emails'
 _createEmails()
 
 async function query(filterBy) {
-    const emails = await storageService.query(STORAGE_KEY)
+    let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
         var { status, txt, isRead } = filterBy
         status = status || 'Inbox'

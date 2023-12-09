@@ -1,0 +1,28 @@
+.email-preview {
+    background: #e96b9509;
+    background-repeat: no-repeat;
+    box-shadow: 0 0 11px #0000002b;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 5px;
+    cursor: pointer;
+   
+}
+
+
+.email-preview .info {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+
+
+.email-preview .actions a {
+    color: white;
+}
+
+.email-preview:hover .actions {
+    transform: translateY(0);
+}

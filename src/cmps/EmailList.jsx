@@ -2,12 +2,13 @@ import { EmailPreview } from "./EmailPreview";
 
 export function EmailList({emails}){
      
+
     return(
          
-          <ul className="Email-List">
+          <ul className="email-list">
 
                     {emails.map(email=> 
-                       <li key={email.id}> <EmailPreview email={email} /></li>)}
+                       <li  key={email.id}> <EmailPreview email={email} /></li>)}
              
           </ul>
      )
