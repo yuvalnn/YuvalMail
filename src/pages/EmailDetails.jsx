@@ -12,6 +12,7 @@ export function EmailDetails({}) {
     useEffect(() => {
       
         LoadEmail(params)
+        SetRead(params)
 
     }, [])
 
@@ -21,6 +22,19 @@ export function EmailDetails({}) {
             const email = await emailService.getById(params.emailId)
             setemail(email)
             
+        } catch (error) {
+            console.log(error)
+        }
+        
+    }
+
+    async function SetRead() {
+        console.log(params)
+        try {
+            const email = await emailService.getById(params.emailId)
+            
+            email.isRead = true
+            email = emailService.save(email)
         } catch (error) {
             console.log(error)
         }

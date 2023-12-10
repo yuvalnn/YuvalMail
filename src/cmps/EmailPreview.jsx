@@ -6,7 +6,7 @@ export function EmailPreview ({email}) {
     return(
          
         <article className="email-preview">
-              <Link to={`/Email/${email.id}`}>
+              <Link to={`/Email/${email.id}`} >
               {`${email.from}  ${email.subject}  ${email.sentAt}`}       
               </Link>                                     
         </article>

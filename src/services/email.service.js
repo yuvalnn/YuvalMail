@@ -41,10 +41,10 @@ function remove(id) {
 }
 
 function save(emailToSave) {
-    if (robotToSave.id) {
+    if (emailToSave.id) {
         return storageService.put(STORAGE_KEY, emailToSave)
     } else {
-        robotToSave.isOn = false
+        emailToSave.isOn = false
         return storageService.post(STORAGE_KEY, emailToSave)
     }
 }
