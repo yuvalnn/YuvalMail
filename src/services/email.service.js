@@ -7,7 +7,8 @@ export const emailService = {
   remove,
   getById,
   createEmail,
-  getDefaultFilter
+  getDefaultFilter,
+  getLoggedinUser
 
 }
 
@@ -15,7 +16,9 @@ const loggedinUser = { email: 'yuvalno@gmail.com', fullname: 'Yuval Neumann' }
 
 const STORAGE_KEY = 'emails'
 
-
+export function getLoggedinUser(){
+    return loggedinUser
+}
 _createEmails()
 
 async function query(filterBy) {
@@ -24,11 +27,11 @@ async function query(filterBy) {
         const { txt, isRead } = filterBy;
         const regexTxtTerm = new RegExp(txt, 'i');
         emails = emails.filter(email => {
-          const isMatch = regexTxtTerm.test(email.body);
-
-          const isReadMatch = typeof isRead === 'boolean' ? email.isRead === isRead : true;
-
-          return isMatch && isReadMatch;
+          const isMatch = regexTxtTerm.test(email.body); //txt filter
+          const isReadMatch = typeof isRead === 'boolean' ? email.isRead === isRead : true; //Select filter
+          
+          // Add filter for logged in User email          
+          return isMatch && isReadMatch && (email.to===getLoggedinUser().email) ;
       });
     }
     return emails
@@ -70,103 +73,158 @@ function createEmail(subject = '', body = '', isRead = false,
 function getDefaultFilter() {
     return {
         status: 'inbox',
-        txt: '', // no need to support complex text search 
-        isRead: null, // (optional property, if missing: show all)
+        txt: '', 
+        isRead: null
     }
 }
 
 function _createEmails() {
     let emails = utilService.loadFromStorage(STORAGE_KEY)
     if (!emails || !emails.length) {
-        emails = [
-            {
-                id: 'e101',
-                subject: 'git init',
-                body: 'Initializing a new Git repository for your project.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332648,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              },
-              {
-                id: 'e102',
-                subject: 'git add',
-                body: 'Staging changes for the next commit in Git.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332649,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              },
-              {
-                id: 'e103',
-                subject: 'git commit',
-                body: 'Creating a snapshot of changes in your Git project.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332650,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              },
-              {
-                id: 'e104',
-                subject: 'git status',
-                body: 'Checking the status of your Git working directory.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332651,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              },
-              {
-                id: 'e105',
-                subject: 'git log',
-                body: 'Viewing the commit history in Git.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332652,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              },
-              {
-                id: 'e106',
-                subject: 'git branch',
-                body: 'Creating and managing branches in Git.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332653,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              },
-              {
-                id: 'e107',
-                subject: 'git merge',
-                body: 'Combining changes from different branches in Git.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332654,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              },
-              {
-                id: 'e108',
-                subject: 'git clone',
-                body: 'Copying a repository from a remote server to your local machine in Git.',
-                isRead: false,
-                isStarred: false,
-                sentAt: 1702094332655,
-                removedAt: null,
-                from: 'giti@gitimomo.com',
-                to: 'yuvalno@gmail.com'
-              }                     
+      emails = [
+        {
+          id: 'e101',
+          subject: 'The Clever Parrot',
+          body: 'Once, a man bought a parrot that could talk. The first thing it said was, "Did you know I can speak three languages?" The man was impressed and asked, "Really? Which languages?" The parrot replied, "English, Bird, and a little bit of Spanish...squawk!"',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332648,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e102',
+          subject: 'The Forgetful Fish',
+          body: 'There was a forgetful fish who went to school every day but kept forgetting its lessons. The teacher asked, "Why don\'t you remember anything?" The fish replied, "I guess my memory is a bit fishy!"',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332649,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e103',
+          subject: 'Musical Vegetables',
+          body: 'Why did the tomato turn red? Because it saw the salad dressing! The cucumber chimed in, "Well, I think that\'s a bit saucy!"',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332650,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e104',
+          subject: 'The Lazy Snowman',
+          body: 'Once, a lazy snowman complained about its job. "I\'m tired of just standing here all day," it grumbled. So, it decided to take a snow-day off!',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332651,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e105',
+          subject: 'The Speedy Snail',
+          body: 'A snail bought a fast sports car and painted an \'S\' on it. When people asked why, the snail proudly said, "So when people see me, they\'ll say, Look at that S-car-go!"',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332652,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e106',
+          subject: 'The Wise Owl',
+          body: 'Why did the wise owl bring a ladder to the bar? Because it heard the drinks were on the house!',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332653,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e107',
+          subject: 'The Dancing Banana',
+          body: 'What did the banana say to the grape? "You\'re a-peeling!" The grape replied, "You\'re bananas if you think I\'m not!"',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332654,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e108',
+          subject: 'The Computers Diet',
+          body: 'Why was the computer cold? It left its Windows open!',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332655,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e109',
+          subject: 'The Talking Dog',
+          body: 'A man walked by a yard with a sign that said, "Talking Dog for Sale." Intrigued, he rang the bell, and the owner brought out a dog. The man asked, "Can your dog really talk?" The owner replied, "No, but he\'s a great listener!"',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332656,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e110',
+          subject: 'The Juggling Jello',
+          body: 'Why did the jello go to the party? Because it wanted to be a little more wobbly!',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332657,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e111',
+          subject: 'The Talkative Toothbrush',
+          body: 'Why did the toothbrush go to school? It wanted to brush up on its knowledge!',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332658,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e112',
+          subject: 'The Martian Bartender',
+          body: 'A Martian walks into a bar and orders a drink. The bartender says, "Sorry, we don\'t serve your kind here." The Martian replies, "Well, that\'s just space-ist!"',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332659,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        },
+        {
+          id: 'e113',
+          subject: 'The Ghosts Job',
+          body: 'Why did the ghost apply for a job? It heard they were looking for someone with a lot of spirit!',
+          isRead: false,
+          isStarred: false,
+          sentAt: 1702094332660,
+          removedAt: null,
+          from: 'giti@gitimomo.com',
+          to: 'yuvalno@gmail.com'
+        }                    
             
         ]
         utilService.saveToStorage(STORAGE_KEY, emails)
