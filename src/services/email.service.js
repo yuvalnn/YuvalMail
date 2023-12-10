@@ -21,13 +21,15 @@ _createEmails()
 async function query(filterBy) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
-        var { status, txt, isRead } = filterBy
-        status = status || 'Inbox'
-        txt = txt || ''
-        isRead = isRead || false
-        const regexTxtTerm = new RegExp(txt, 'i')
-        emails = emails.filter(email=> 
-          regexTxtTerm.test(email.body))
+        const { txt, isRead } = filterBy;
+        const regexTxtTerm = new RegExp(txt, 'i');
+        emails = emails.filter(email => {
+          const isMatch = regexTxtTerm.test(email.body);
+
+          const isReadMatch = typeof isRead === 'boolean' ? email.isRead === isRead : true;
+
+          return isMatch && isReadMatch;
+      });
     }
     return emails
 }

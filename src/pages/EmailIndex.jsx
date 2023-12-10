@@ -32,15 +32,14 @@ export function EmailIndex() {
         setFilterBy(prevFilterBy => ({...prevFilterBy,...filterBy}))
      }
 
-
     console.log('Rended')
     
     if (!emails) return <div>Loading...</div>
-    const {txt} = filterBy
+    //const {txt,isRead} = filterBy
     return (
 
         <section className="Email-index">
-          <EmailFilter filterBy={txt} onSetFilter={onSetFilter} />
+          <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
           <EmailList emails= {emails} />                    
 
         </section>
