@@ -30,11 +30,16 @@
 
 li{
     list-style: none;
-    background-color: aliceblue;
+    
+}
+
+.isNotRead{
+    background-color: aliceblue; 
 }
 
  li {
     position: relative;
+    
   }
   
  li:not(:last-child)::after {
