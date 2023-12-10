@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
 }
 
 .app-header h1.logo {
@@ -26,3 +27,22 @@
 .app-header section.container>section {
     flex-grow: 1;
 }
+
+li{
+    list-style: none;
+    background-color: aliceblue;
+}
+
+ li {
+    position: relative;
+  }
+  
+ li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 1px solid #000; /* Adjust the border style as needed */
+  }
+

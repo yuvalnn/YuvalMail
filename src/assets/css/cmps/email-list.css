@@ -1,17 +1,13 @@
 .email-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    
-    padding: 0;
-    gap: 15px;
-    list-style-type: none;
+    color: white;
+    border: 5px solid gold;
+    display: inline-flex;
+    flex-direction: column;
 }
 
-.email-list .email-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #000000c9;
-    transition: transform 0.2s;
+.email-list > ul{
+
+    list-style: none;
 }
+
+
