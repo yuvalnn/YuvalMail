@@ -1,6 +1,7 @@
 .app-header {
     background: #6fd761;
     color: white;
+    grid-area: 1 / 1 / 1 / -1;
 
 }
 
@@ -28,26 +29,5 @@
     flex-grow: 1;
 }
 
-li{
-    list-style: none;
-    
-}
 
-.isNotRead{
-    background-color: aliceblue; 
-}
-
- li {
-    position: relative;
-    
-  }
-  
- li:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-bottom: 1px solid #000; /* Adjust the border style as needed */
-  }
 

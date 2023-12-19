@@ -1,0 +1,8 @@
+.email-index {
+   grid-area: 2;
+   display: grid;
+   height: 100vh;
+   grid-template-rows: 10% 90%;
+   width: 100%;
+   
+}

@@ -1,13 +1,25 @@
-.email-list {
-    color: white;
-    border: 5px solid gold;
-    display: inline-flex;
-    flex-direction: column;
-}
+.email-list  li {
 
-.email-list > ul{
-
-    list-style: none;
+     /* display: flex;  */
+     list-style: none;
+    
 }
 
 
+.isNotRead{
+    font-weight: bold;
+}
+
+ li {
+    position: relative;
+    
+  }
+  
+ li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 1px solid #000; /* Adjust the border style as needed */
+  }

@@ -4,10 +4,12 @@
     box-shadow: 0 0 11px #0000002b;
     padding: 15px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     overflow: hidden;
     border-radius: 5px;
     cursor: pointer;
+    justify-content: space-between;
+    
    
 }
 

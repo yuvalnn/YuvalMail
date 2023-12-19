@@ -34,7 +34,7 @@ export function EmailDetails({}) {
             const email = await emailService.getById(params.emailId)
             
             email.isRead = true
-            email = emailService.save(email)
+            emailService.save(email)
         } catch (error) {
             console.log(error)
         }

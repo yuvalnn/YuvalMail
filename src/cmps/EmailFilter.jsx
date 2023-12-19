@@ -29,16 +29,20 @@ const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
      const isReadValue = isRead === null ? '' : isRead;         
     return (
         
-        <section className="Email-Filter">
+        <section className="email-Filter">
            
+            <div>
            <label htmlFor="txt">Search</label>
             <input onChange={handleChange} id="txt" value={txt} name="txt" type="text" />
-
+            </div>
+            
+            <div>
             <select id="isRead" name="isRead" value={isReadValue} onChange={handleChange}>
                <option value=''>All</option>
                <option value="true">Read</option>
                <option value="false">Unread</option> 
             </select>
+            </div>
 
 
         </section>

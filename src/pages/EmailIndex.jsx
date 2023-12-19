@@ -38,7 +38,7 @@ export function EmailIndex() {
     //const {txt,isRead} = filterBy
     return (
 
-        <section className="Email-index">
+        <section className="email-index">
           <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
           <EmailList emails= {emails} />                    
 
