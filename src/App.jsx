@@ -1,5 +1,5 @@
 
-import { Route, HashRouter as Router, Routes} from 'react-router-dom';
+import { Route, HashRouter as Router, Routes } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { AppHeader } from './cmps/AppHeader';
 import { AppFooter } from './cmps/AppFooter';
@@ -11,22 +11,21 @@ export function App() {
 
     return (
         <Router>
-         <section className='main-app'>
-            <AppHeader />
-            <main className='container'>
+            <section className='main-app'>
+                <AppHeader />
+                
                 <Routes>
-                  <Route path='/' element={<Home />} />
-                  <Route path='/AboutUs' element={<AboutUs/>} />
-                  <Route path='/Email' element={<EmailIndex />} />
-                  <Route path='/Email/:emailId' element={<EmailDetails />} />
+                    <Route path='/' element={<Home />} />
+                    <Route path='/AboutUs' element={<AboutUs />} />
+                    <Route path='/Email' element={<EmailIndex />} />
+                    <Route path='/Email/:emailId' element={<EmailDetails />} />
                 </Routes>
-            </main>
- 
-                 
-        </section>
-             <AppFooter />
+                
+            </section>
+            <AppFooter />
+            
         </Router>
-        
+
 
     )
 }

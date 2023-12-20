@@ -40,9 +40,9 @@ a {
 
 }
 
-a:hover {
+/* a:hover {
     text-decoration: underline;
-}
+} */
 
 button {
     font-family: inherit;
@@ -78,17 +78,28 @@ input {
     -webkit-border-radius: 100px;
 }
 
-.main-app {
+/* .main-app {
     min-height: 100vh;
     display: grid;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 10% 80%;
     grid-template-columns: 20% 80%;
+    grid-template-areas: "logo header"
+                         "nav content";
+                         
+} */
+
+.main-app{
+
+       display : flex;
+       flex-direction: column;
+       min-height: 100vh;    
 }
 
 
-.main-app main {
+/* .main-app main {
     grid-area: 2 / 2 / 2 / -1;
-}
+    grid-area: content;
+} */
 
 .main-app > footer {
     background-color: #111;

@@ -1,25 +1,31 @@
-.email-list  li {
-
-     /* display: flex;  */
-     list-style: none;
-    
-}
-
-
-.isNotRead{
-    font-weight: bold;
-}
-
- li {
-    position: relative;
-    
-  }
+.email-list {
+  grid-area: content;
+  box-shadow: 0 0 11px #0000002b;
+  padding: 0;
+  overflow-y: hidden;
   
- li:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-bottom: 1px solid #000; /* Adjust the border style as needed */
-  }
+}
+.email-list li {
+  /* display: flex;  */
+  list-style: none;
+  border-top: 1px solid gray;
+}
+
+.isNotRead {
+  font-weight: bold;
+}
+/* 
+li {
+  position: relative;
+}
+ */
+/* Adjust the border style as needed */
+/* li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid #000; 
+}
+ */

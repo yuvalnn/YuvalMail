@@ -29,7 +29,7 @@ const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
      const isReadValue = isRead === null ? '' : isRead;         
     return (
         
-        <section className="email-Filter">
+        <section className="email-filter">
            
             <div>
            <label htmlFor="txt">Search</label>

@@ -2,7 +2,8 @@
 export const utilService = {
     makeId,
     saveToStorage,
-    loadFromStorage
+    loadFromStorage,
+    formatTimestampToMonthDay
 }
 
 function makeId(length = 5) {
@@ -22,3 +23,15 @@ function loadFromStorage(key, defaultValue = null) {
     var value = localStorage[key] || defaultValue;
     return JSON.parse(value);
 }
+
+
+function formatTimestampToMonthDay(timestamp) {
+    const date = new Date(timestamp);
+
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric'
+    }).format(date);
+    
+
+  }  
