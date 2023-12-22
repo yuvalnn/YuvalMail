@@ -46,12 +46,12 @@ export function EmailIndex() {
     console.log('Rended')
     
     if (!emails || !folders) return <div>Loading...</div>
-    //const {txt,isRead} = filterBy
+    const {status,txt,isRead} = filterBy
     return (
 
         <section className="email-index">
-          <EmailFolderList folders = {folders} filterBy={filterBy} onSetFilter={onSetFilter}/>
-          <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
+          <EmailFolderList folders = {folders} filterBy={{status}} onSetFilter={onSetFilter}/>
+          <EmailFilter filterBy={{txt,isRead}} onSetFilter={onSetFilter} />
           <EmailList emails= {emails} />                    
 
         </section>
