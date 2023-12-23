@@ -69,6 +69,21 @@ export function EmailIndex() {
 
   }
 
+  async function onAddEmail(emailToAdd){
+   
+    try {
+      const savedEmail =  await emailService.save(emailToAdd)       
+      setEmails((prevEmail)=> [...prevEmail,savedEmail])
+        
+      // Sort emails by sentAt in descending order (newer to older)
+      setEmails((prevEmails) => [...prevEmails.sort((a, b) => b.sentAt - a.sentAt)]);
+    } 
+    catch (error) {
+        
+        console.log('Had issues saving email', error);
+    }
+}
+
   console.log("rendedagain")
   if (!emails || !folders) return <div>Loading...</div>
   const { status, txt, isRead } = filterBy
@@ -79,8 +94,7 @@ export function EmailIndex() {
       <EmailFolderList folders={folders} filterBy={{ status }} onSetFilter={onSetFilter} />
       <EmailFilter filterBy={{ txt, isRead }} onSetFilter={onSetFilter} />
       <EmailList emails={emails} onUpdateEmail={onUpdateEmail} />
-
-      <Outlet />
+      <Outlet context={{test:'yuval', onAddEmail}}/>
     </section>
   )
 } 

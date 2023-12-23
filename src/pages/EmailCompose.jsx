@@ -1,12 +1,13 @@
 
 import { useState } from "react"
 import { emailService } from "../services/email.service"
-import { Link,useNavigate } from "react-router-dom"
+import { Link,useNavigate, useOutletContext } from "react-router-dom"
 
 
 export function EmailCompose() {
 
 const [email, setEmail] = useState(emailService.createEmail())
+const {onAddEmail} = useOutletContext()
 const navigate = useNavigate()
 
 
@@ -14,12 +15,11 @@ const navigate = useNavigate()
         ev.preventDefault()
 
         try {
-
-          const Newemail =  await emailService.save(email)
+           await onAddEmail(email)
            navigate('/Email') 
         } catch (error) {
             
-            console.log('Had issues saving email', err);
+            console.log('Had issues saving email', error);
         }
     }
 
@@ -31,6 +31,7 @@ const navigate = useNavigate()
     
     const { subjetc, body, from, to } = email
     console.log(email)
+
     return (    
         <div className="email-compose">
             <h1>New Message</h1>
