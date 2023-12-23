@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 
 
 export function EmailFolderList({ folders, filterBy, onSetFilter }) {
@@ -14,13 +15,14 @@ export function EmailFolderList({ folders, filterBy, onSetFilter }) {
    }
 
 
-   const { status } = filterByToEdit
+   //const { status } = filterByToEdit
    return (
       <ul className="folders-list">
-
+         
          {folders.map(folder =>
+            
             <li key={folder.id} onClick={() => handleChange(folder.status, "status")}
-               className={folder.status === status ? 'selected' : ''}
+               className={folder.status === filterBy.status ? 'selected' : ''}
             > 
             {folder.status}</li>)}
       </ul>

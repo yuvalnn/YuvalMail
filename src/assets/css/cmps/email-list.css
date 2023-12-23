@@ -5,11 +5,27 @@
   overflow-y: hidden;
   
 }
-.email-list li {
-  /* display: flex;  */
+.email-list li{
+  display: flex;    
   list-style: none;
   border-top: 1px solid gray;
 }
+
+.email-list .star-preview{
+  align-self: center;
+  background: #e96b9509;
+}
+
+.email-list .star-preview.selected{
+  
+    color: orange;
+  
+}
+
+.star-preview:hover{
+  box-shadow: 1px 1px 5px 0px rgb(0 0 0 / 48%);
+}
+
 
 .isNotRead {
   font-weight: bold;

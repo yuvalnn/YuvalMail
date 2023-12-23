@@ -9,51 +9,70 @@ import { EmailFolderList } from "../cmps/EmailFolderList"
 
 
 export function EmailIndex() {
-    const [emails, setEmails] = useState(null)
-    const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter())
-    const [folders, setFolder]  = useState(null)
+  const [emails, setEmails] = useState(null)
+  const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter())
+  const [folders, setFolder] = useState(null)
 
-    useEffect(()=> {
 
-      LoadEmails()
-      LoadFolders()
-      console.log('Mounted/Effect')
-      console.log(filterBy)
+  useEffect(() => {
 
-    },
-    
+    LoadEmails()
+    LoadFolders()
+    console.log('Mounted/Effect')
+    console.log(filterBy)
+
+  },
+
     [filterBy])
-     
-    async function LoadFolders() {
 
+  async function LoadFolders() {
+
+    try {
       const folders = await emailService.queryFolders()
       console.log(folders)
       setFolder(folders)
-      
-   }
-     async function LoadEmails() {
 
-        const emails = await emailService.queryEmails(filterBy)
-        console.log(emails)
-        setEmails(emails)
-     }
+    } catch (error) {
+      console.log(error)
+    }
 
-     function onSetFilter(filterBy) {
+  }
+  async function LoadEmails() {
 
-        setFilterBy(prevFilterBy => ({...prevFilterBy,...filterBy}))
-     }
+    const emails = await emailService.queryEmails(filterBy)
+    console.log(emails)
+    setEmails(emails)
+  }
 
-    console.log('Rended')
-    
-    if (!emails || !folders) return <div>Loading...</div>
-    const {status,txt,isRead} = filterBy
-    return (
+  function onSetFilter(filterBy) {
 
-        <section className="email-index">
-          <EmailFolderList folders = {folders} filterBy={{status}} onSetFilter={onSetFilter}/>
-          <EmailFilter filterBy={{txt,isRead}} onSetFilter={onSetFilter} />
-          <EmailList emails= {emails} />                    
+    setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...filterBy }))
+  }
 
-        </section>
-    )
-}
+  async function onUpdateEmail(emailToUpdate) {
+
+    try {
+
+      const savedEmail = await emailService.save(emailToUpdate)
+
+      setEmails((prevEmails) => prevEmails.map(email => email.id === savedEmail.id ? savedEmail : email))
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  console.log('Rended')
+
+  if (!emails || !folders) return <div>Loading...</div>
+  const { status, txt, isRead } = filterBy
+  return (
+
+    <section className="email-index">
+      <EmailFolderList folders={folders} filterBy={{ status }} onSetFilter={onSetFilter} />
+      <EmailFilter filterBy={{ txt, isRead }} onSetFilter={onSetFilter} />
+      <EmailList emails={emails} onUpdateEmail={onUpdateEmail} />
+    </section>
+  )
+} 

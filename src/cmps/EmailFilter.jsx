@@ -20,15 +20,15 @@ export function EmailFilter({ filterBy, onSetFilter }) {
     }
 
 
-    const { txt, isRead } = filterByToEdit
-    const isReadValue = isRead === null ? '' : isRead;
+    //const { txt, isRead } = filterByToEdit
+    const isReadValue = filterBy.isRead === null ? '' : filterBy.isRead;
     return (
 
         <section className="email-filter">
 
             <div>
                 <label htmlFor="txt">Search</label>
-                <input onChange={handleChange} id="txt" value={txt} name="txt" type="text" />
+                <input onChange={handleChange} id="txt" value={filterBy.txt} name="txt" type="text" />
             </div>
 
             <div>

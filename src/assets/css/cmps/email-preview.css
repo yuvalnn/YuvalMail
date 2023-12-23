@@ -1,7 +1,6 @@
 .email-preview {
     background: #e96b9509;
-    background-repeat: no-repeat;
-    
+    background-repeat: no-repeat;    
     padding: 15px;
     display: flex;
     flex-direction: row;
@@ -9,9 +8,9 @@
     border-radius: 5px;
     cursor: pointer;
     justify-content: space-between;
-    
-   
+    width: 100%;
 }
+
 
 .email-preview:hover {
     box-shadow: 1px 1px 5px 0px rgb(0 0 0 / 48%);
