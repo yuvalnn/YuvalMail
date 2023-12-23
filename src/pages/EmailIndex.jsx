@@ -56,6 +56,7 @@ export function EmailIndex() {
       const savedEmail = await emailService.save(emailToUpdate)
 
       setEmails((prevEmails) => prevEmails.map(email => email.id === savedEmail.id ? savedEmail : email))
+      
 
     } catch (error) {
       console.log(error)
@@ -63,8 +64,7 @@ export function EmailIndex() {
 
   }
 
-  console.log('Rended')
-
+  console.log("rendedagain")
   if (!emails || !folders) return <div>Loading...</div>
   const { status, txt, isRead } = filterBy
   return (

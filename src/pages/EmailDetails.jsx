@@ -1,6 +1,7 @@
 import {  useNavigate,useParams } from "react-router"
 import { useEffect, useState } from "react"
 import { emailService } from "../services/email.service"
+import { utilService } from "../services/util.service"
 
 export function EmailDetails({}) {
     const [email, setemail] = useState(null)        
@@ -44,7 +45,13 @@ export function EmailDetails({}) {
     function onBack(){
         navigate('/Email')
     }
+    
+    function onRemoveEmail()
+    {
+          emailService.remove(params.emailId)
+          navigate('/Email')
 
+    }
     console.log('Render');
     if (!email) return <div>Loading...</div>
 
@@ -55,6 +62,7 @@ export function EmailDetails({}) {
             {email.body}
          </p>
          <button onClick={onBack}>Back</button>
+         <button onClick={onRemoveEmail}>X</button>
 
     </section>)
     

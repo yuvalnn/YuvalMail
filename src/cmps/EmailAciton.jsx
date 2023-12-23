@@ -1,13 +1,16 @@
+import { useEffect, useState } from "react"
 
 export function EmailAction({email , onUpdateEmail}){
+    const [isStarred, setIsStarred] = useState(email.isStarred)
     
-  
-    function onToggleStar() {          
-        const updateEmail = {...email,isStarred : email.isStarred ? false : true}   
-       onUpdateEmail(updateEmail)
-      } 
-    
-    const isSelected  = email.isStarred ? '' : 'selected'         
+
+    function onToggleStar() { 
+         setIsStarred((prevStar)=>(!prevStar))    
+         const updateEmail = {...email,isStarred : !isStarred}   
+         onUpdateEmail(updateEmail)             
+      }       
+
+    const isSelected  = isStarred ? 'selected' : ''         
     return (
         <div className={`star-preview fa fa-star ${isSelected}`}
          onClick={() => { onToggleStar() }}>
