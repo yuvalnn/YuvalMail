@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { utilService } from "../services/util.service"
 
 
 export function EmailPreview({ email }) {
@@ -12,7 +13,7 @@ export function EmailPreview({ email }) {
           {`${email.subject}`}
         </div>
         <div>
-          {`${email.sentAt}`}
+          {`${utilService.formatTimestampToMonthDay(email.sentAt)}`}
         </div>
       </Link>
       

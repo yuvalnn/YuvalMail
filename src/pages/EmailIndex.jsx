@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { emailService } from "../services/email.service"
-import { utilService } from "../services/util.service"
 import { EmailList } from "../cmps/EmailList"
 import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailFolderList } from "../cmps/EmailFolderList"
+import { Outlet } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 
 
@@ -38,10 +39,14 @@ export function EmailIndex() {
 
   }
   async function LoadEmails() {
+    try {
+      const emails = await emailService.queryEmails(filterBy)
+      console.log(emails)
+      setEmails(emails)
+    } catch (error) {
+       console.log('Had issues loading emails', error)
+    }
 
-    const emails = await emailService.queryEmails(filterBy)
-    console.log(emails)
-    setEmails(emails)
   }
 
   function onSetFilter(filterBy) {
@@ -70,9 +75,12 @@ export function EmailIndex() {
   return (
 
     <section className="email-index">
+      <Link to="/email/compose"><button>Compose</button></Link>
       <EmailFolderList folders={folders} filterBy={{ status }} onSetFilter={onSetFilter} />
       <EmailFilter filterBy={{ txt, isRead }} onSetFilter={onSetFilter} />
       <EmailList emails={emails} onUpdateEmail={onUpdateEmail} />
+
+      <Outlet />
     </section>
   )
 } 

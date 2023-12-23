@@ -1,0 +1,39 @@
+.email-compose  {
+    position: absolute;
+    
+    inset: 0;
+    margin-left: 25rem;
+    margin-top: 15rem;
+    padding: 2em;
+    border-radius: 1em;
+    background-color: white;
+    border-radius: 5%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    box-shadow: 1px 1px 5px 0px rgb(0 0 0 / 48%);
+    /* justify-content: center; */
+}
+
+.email-compose .close-btn {
+    position: absolute;
+ 
+    right: 2em;
+}
+
+.email-compose form {
+    width: 60%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+.email-compose form label {
+    margin-top: 20px;
+}
+
+.email-compose form button {
+    width: 50%;
+    align-self: center;
+}

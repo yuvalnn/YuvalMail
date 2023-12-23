@@ -24,7 +24,9 @@ export function EmailDetails({}) {
             setemail(email)
             
         } catch (error) {
-            console.log(error)
+            navigate('/Email')
+            console.log('Had issues loading email', error)
+         
         }
         
     }

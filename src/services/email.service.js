@@ -49,6 +49,8 @@ async function queryEmails(filterBy) {
           return isMatch && isReadMatch &&  statusFolder ;
       });
     }
+    // Sort emails by sentAt in descending order (newer to older)
+    emails.sort((a, b) => b.sentAt - a.sentAt);
     return emails
 }
 
@@ -64,15 +66,15 @@ function save(emailToSave) {
     if (emailToSave.id) {
         return storageService.put(EMAIL_KEY, emailToSave)
     } else {
-        emailToSave.isOn = false
+        //emailToSave.isOn = false
         return storageService.post(EMAIL_KEY, emailToSave)
     }
 }
 
 function createEmail(subject = '', body = '', isRead = false,
-                     isStarred = false, sentAt=utilService.formatTimestampToMonthDay(Date.now()), 
-                     removedAt=  null, from = 'yuvalno@gmail.com' ,
-                     to= 'yuvalno@gmail.com') {
+                     isStarred = false, sentAt=Date.now(), 
+                     removedAt=  null, from ='' ,
+                     to= '') {
     return {
               subject,
               body,
@@ -133,7 +135,7 @@ function _createEmails() {
           body: 'Once, a man bought a parrot that could talk. The first thing it said was, "Did you know I can speak three languages?" The man was impressed and asked, "Really? Which languages?" The parrot replied, "English, Bird, and a little bit of Spanish...squawk!"',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',  
           to: 'yuvalno@gmail.com'
@@ -144,7 +146,7 @@ function _createEmails() {
           body: 'There was a forgetful fish who went to school every day but kept forgetting its lessons. The teacher asked, "Why don\'t you remember anything?" The fish replied, "I guess my memory is a bit fishy!"',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -155,7 +157,7 @@ function _createEmails() {
           body: 'Why did the tomato turn red? Because it saw the salad dressing! The cucumber chimed in, "Well, I think that\'s a bit saucy!"',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -166,7 +168,7 @@ function _createEmails() {
           body: 'Once, a lazy snowman complained about its job. "I\'m tired of just standing here all day," it grumbled. So, it decided to take a snow-day off!',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -177,7 +179,7 @@ function _createEmails() {
           body: 'A snail bought a fast sports car and painted an \'S\' on it. When people asked why, the snail proudly said, "So when people see me, they\'ll say, Look at that S-car-go!"',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -188,7 +190,7 @@ function _createEmails() {
           body: 'Why did the wise owl bring a ladder to the bar? Because it heard the drinks were on the house!',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -199,7 +201,7 @@ function _createEmails() {
           body: 'What did the banana say to the grape? "You\'re a-peeling!" The grape replied, "You\'re bananas if you think I\'m not!"',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -210,7 +212,7 @@ function _createEmails() {
           body: 'Why was the computer cold? It left its Windows open!',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -221,7 +223,7 @@ function _createEmails() {
           body: 'A man walked by a yard with a sign that said, "Talking Dog for Sale." Intrigued, he rang the bell, and the owner brought out a dog. The man asked, "Can your dog really talk?" The owner replied, "No, but he\'s a great listener!"',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -232,7 +234,7 @@ function _createEmails() {
           body: 'Why did the jello go to the party? Because it wanted to be a little more wobbly!',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -243,7 +245,7 @@ function _createEmails() {
           body: 'Why did the toothbrush go to school? It wanted to brush up on its knowledge!',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -254,7 +256,7 @@ function _createEmails() {
           body: 'A Martian walks into a bar and orders a drink. The bartender says, "Sorry, we don\'t serve your kind here." The Martian replies, "Well, that\'s just space-ist!"',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'
@@ -265,7 +267,7 @@ function _createEmails() {
           body: 'Why did the ghost apply for a job? It heard they were looking for someone with a lot of spirit!',
           isRead: false,
           isStarred: false,
-          sentAt : utilService.formatTimestampToMonthDay(1702094332648),
+          sentAt : 1702094332648,
           removedAt: null,
           from: 'giti@gitimomo.com',
           to: 'yuvalno@gmail.com'

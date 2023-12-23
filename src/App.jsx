@@ -6,6 +6,7 @@ import { AppFooter } from './cmps/AppFooter';
 import { AboutUs } from './pages/AboutUs';
 import { EmailIndex } from './pages/EmailIndex';
 import { EmailDetails } from './pages/EmailDetails';
+import { EmailCompose } from './pages/EmailCompose';
 
 export function App() {
 
@@ -16,9 +17,11 @@ export function App() {
                 
                 <Routes>
                     <Route path='/' element={<Home />} />
-                    <Route path='/AboutUs' element={<AboutUs />} />
-                    <Route path='/Email' element={<EmailIndex />} />
-                    <Route path='/Email/:emailId' element={<EmailDetails />} />
+                    <Route path='/aboutUs' element={<AboutUs />} />
+                    <Route path='/email' element={<EmailIndex />} >
+                          <Route path='/email/compose/' element={<EmailCompose/>} />
+                    </Route>
+                    <Route path='/email/:emailId' element={<EmailDetails />} />
                 </Routes>
                 
             </section>
