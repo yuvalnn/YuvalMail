@@ -7,6 +7,7 @@ import { AboutUs } from './pages/AboutUs';
 import { EmailIndex } from './pages/EmailIndex';
 import { EmailDetails } from './pages/EmailDetails';
 import { EmailCompose } from './pages/EmailCompose';
+import { EmailFolderList } from './cmps/EmailFolderList';
 
 export function App() {
 
@@ -19,9 +20,13 @@ export function App() {
                     <Route path='/' element={<Home />} />
                     <Route path='/aboutUs' element={<AboutUs />} />
                     <Route path='/email' element={<EmailIndex />} >
+                        {/* <Route path='email/Inbox/' element={<EmailCompose/>} />
+                          <Route path='email/:folder/:emailId?' element={<EmailCompose/>} /> */}
+                          <Route path='/email/:folder/:emailId' element={<EmailDetails />} />
                           <Route path='/email/compose/' element={<EmailCompose/>} />
                     </Route>
-                    <Route path='/email/:emailId' element={<EmailDetails />} />
+                    <Route path='/email/:folder' element={<EmailIndex />} />
+                    
                 </Routes>
                 
             </section>

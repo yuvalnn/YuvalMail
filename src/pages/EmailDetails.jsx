@@ -45,13 +45,13 @@ export function EmailDetails({}) {
     }
 
     function onBack(){
-        navigate('/Email')
+        navigate(`/Email/${params.folder}`)
     }
     
     function onRemoveEmail()
     {
           emailService.remove(params.emailId)
-          navigate('/Email')
+          navigate(`/Email/${params.folder}`)
 
     }
     console.log('Render');

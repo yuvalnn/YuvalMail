@@ -42,9 +42,10 @@ async function queryEmails(filterBy) {
         emails = emails.filter(email => {
           const isMatch = regexTxtTerm.test(email.body); //txt filter
           const isReadMatch = typeof isRead === 'boolean' ? email.isRead === isRead : true; //Select filter
-          if (status === 'Inbox'){
+          if (status === 'inbox'){
             statusFolder = (email.to===getLoggedinUser().email);
-          }          
+          } 
+              
           // Add filter for logged in User email          
           return isMatch && isReadMatch &&  statusFolder ;
       });
@@ -104,16 +105,20 @@ function _createEmailFolderList() {
         folders =  [
          {
           id: 'f101',
-          status: 'Inbox'
+          title: 'Inbox',
+          status: 'inbox'
          },{
           id: 'f102',
-          status: 'Sent'
+          title: 'Sent',
+          status: 'sent'
          },{
           id: 'f103',
-          status: 'Star'
+          title: 'Star',
+          status: 'star'
          },{
           id: 'f104',
-          status: 'Trash'
+          title: 'Trash',
+          status: 'trash'
          }
 
        ]

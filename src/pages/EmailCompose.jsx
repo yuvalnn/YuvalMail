@@ -16,7 +16,7 @@ const navigate = useNavigate()
 
         try {
            await onAddEmail(email)
-           navigate('/Email') 
+           navigate('/email') 
         } catch (error) {
             
             console.log('Had issues saving email', error);

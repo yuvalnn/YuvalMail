@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { utilService } from "../services/util.service"
 
 
 export function EmailPreview({ email }) {
-  
+  const params = useParams()
   return (      
-      <Link className="email-preview" to={`/Email/${email.id}`} >
+      <Link className="email-preview" to={`/email/${params.folder}/${email.id}`} >
         <div>
           {`From: ${email.from}`}
         </div>
