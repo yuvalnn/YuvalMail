@@ -1,5 +1,5 @@
 .email-compose  {
-    position: absolute;
+    position: fixed;
     
     inset: 0;
     margin-left: 25rem;

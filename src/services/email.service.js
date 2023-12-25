@@ -45,7 +45,15 @@ async function queryEmails(filterBy) {
           if (status === 'inbox'){
             statusFolder = (email.to===getLoggedinUser().email);
           } 
-              
+          if (status ==='sent') {
+            statusFolder = (email.from===getLoggedinUser().email);
+          }  
+          if (status ==='star') {
+            statusFolder = email.isStarred;
+          }
+        /*   if (status ==='trash'){
+            statusFolder 
+          } */
           // Add filter for logged in User email          
           return isMatch && isReadMatch &&  statusFolder ;
       });
@@ -90,7 +98,7 @@ function createEmail(subject = '', body = '', isRead = false,
 
 function getDefaultFilter() {
     return {
-        status: 'Inbox',
+        status: 'inbox',
         txt: '', 
         isRead: null
     }

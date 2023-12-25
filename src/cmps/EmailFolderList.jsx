@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react"
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 export function EmailFolderList({ folders, filterBy, onSetFilter }) {
    const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
-   const params = useParams()
-   
-   useEffect(() => {
+
+/*    useEffect(() => {
       onSetFilter(filterByToEdit)
    }, [filterByToEdit])
-
-   function handleChange(status, field) {
+ */
+/*    function handleChange(status, field) {
       setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: status }));
       console.log('change folfer:' + status)
    }
-
+ */
 
    //const { status } = filterByToEdit
    return (

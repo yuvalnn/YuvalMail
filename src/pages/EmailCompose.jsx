@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { emailService } from "../services/email.service"
 import { Link,useNavigate, useOutletContext } from "react-router-dom"
 
@@ -7,16 +7,20 @@ import { Link,useNavigate, useOutletContext } from "react-router-dom"
 export function EmailCompose() {
 
 const [email, setEmail] = useState(emailService.createEmail())
-const {onAddEmail} = useOutletContext()
+const {onAddEmail ,folder} = useOutletContext()
 const navigate = useNavigate()
+      
 
+    useEffect(()=>{
+           
+    },[])
 
     async function onSaveEmail(ev){
         ev.preventDefault()
 
         try {
            await onAddEmail(email)
-           navigate('/email') 
+           navigate(`/email/${folder}`) 
         } catch (error) {
             
             console.log('Had issues saving email', error);
@@ -30,7 +34,7 @@ const navigate = useNavigate()
     }
     
     const { subjetc, body, from, to } = email
-    console.log(email)
+   
 
     return (    
         <div className="email-compose">
@@ -53,7 +57,7 @@ const navigate = useNavigate()
                 <input value={body} onChange={handleChange}
                     type="text" id="body" name="body" />
                   <button>Send</button>
-                <Link to="/email"><button className="close-btn">X </button></Link>
+                <Link to={`/email/${folder}`}><button className="close-btn">X </button></Link>
 
             </form>
         </div>

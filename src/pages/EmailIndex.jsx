@@ -10,14 +10,15 @@ export function EmailIndex() {
   const [emails, setEmails] = useState(null)
   const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter())
   const [folders, setFolder] = useState(null)
-  const params = useParams()
+  const {emailId, folder} = useParams()
 
-
+   
   useEffect(() => {
-    console.log(params)
+    filterBy.status = folder
     LoadEmails()
     LoadFolders()
-  }, [filterBy, params])
+  }, [filterBy,folder])
+
 
   async function LoadFolders() {
     try {
@@ -28,7 +29,7 @@ export function EmailIndex() {
       console.log(error)
     }
   }
-
+  
   async function LoadEmails() {
     try {
       const emails = await emailService.queryEmails(filterBy)
@@ -55,31 +56,44 @@ export function EmailIndex() {
   async function onAddEmail(emailToAdd) {
     try {
       const savedEmail = await emailService.save(emailToAdd)
-      setEmails((prevEmail) => [...prevEmail, savedEmail])
+
+      if (folder === 'sent' || 
+      (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')){
+        setEmails((prevEmails) => [ savedEmail,...prevEmails])
+      }
+      
+      //LoadEmails(emails)
       // Sort emails by sentAt in descending order (newer to older)
-      setEmails((prevEmails) => [...prevEmails.sort((a, b) => b.sentAt - a.sentAt)]);
+      //setEmails((prevEmails) => [...prevEmails.sort((a, b) => b.sentAt - a.sentAt)]);
     }
     catch (error) {
       console.log('Had issues saving email', error);
     }
   }
 
-  console.log("rendedagain")
-  console.log(params)
-  if (!emails || !folders) return <div>Loading...</div>
-  filterBy.status = params.folder
+  async function onRemoveEmail(emailId) {
+    try {
+        await emailService.remove(emailId)
+        setEmails((prevEmails) => prevEmails.filter(email => email.id !== emailId))  
+    } catch (err) {
+        console.log('Had issues loading emails', err);
+    }
+}
+
+  if (!(emails)) return <div>Loading...</div>
+  console.log("renderagain")
+  
   const { status, txt, isRead } = filterBy
+  
   return (
-
     <section className="email-index">
-      <Link to="/email/compose"><button>Compose</button></Link>
+      <Link to={`/email/${folder}/compose`}><button>Compose</button></Link>
       <EmailFolderList folders={folders} filterBy={{ status }} onSetFilter={onSetFilter} />
-      {!params.emailId && <div>
+      {!emailId && <div>
         <EmailFilter filterBy={{ txt, isRead }} onSetFilter={onSetFilter} />
-        <EmailList emails={emails} onUpdateEmail={onUpdateEmail} />
+        <EmailList emails={emails} onUpdateEmail={onUpdateEmail}  />
       </div>}
-
-      <Outlet context={{ test: 'yuval', onAddEmail, folders, status, onSetFilter }} />
+      <Outlet context={{ test: "yuval", onAddEmail, folders,  onSetFilter , folder: folder , onRemoveEmail}} />
     </section>
   )
 } 

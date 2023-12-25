@@ -1,12 +1,14 @@
-import {  useNavigate,useParams } from "react-router"
+import {  useNavigate,useParams,useOutletContext } from "react-router"
 import { useEffect, useState } from "react"
 import { emailService } from "../services/email.service"
 import { utilService } from "../services/util.service"
+
 
 export function EmailDetails({}) {
     const [email, setemail] = useState(null)        
     const params = useParams()
     const navigate = useNavigate()
+    const { onRemoveEmail } = useOutletContext()
 
     console.log(params)
 
@@ -24,7 +26,7 @@ export function EmailDetails({}) {
             setemail(email)
             
         } catch (error) {
-            navigate('/Email')
+            navigate('email')
             console.log('Had issues loading email', error)
          
         }
@@ -40,20 +42,25 @@ export function EmailDetails({}) {
             emailService.save(email)
         } catch (error) {
             console.log(error)
-        }
-        
+        }  
     }
 
     function onBack(){
-        navigate(`/Email/${params.folder}`)
+        navigate(`/email/${params.folder}`)
     }
     
-    function onRemoveEmail()
+   async function onRemove()
     {
-          emailService.remove(params.emailId)
-          navigate(`/Email/${params.folder}`)
-
+          try {
+             /*  await onRemoveEmail(params.emailId)  */
+               await emailService.remove(params.emailId)
+              navigate(`/email/${params.folder}`)                 
+          } catch (error) {
+            console.log('Had issues delete email', err);
+          }
     }
+
+    
     console.log('Render');
     if (!email) return <div>Loading...</div>
 
@@ -64,7 +71,7 @@ export function EmailDetails({}) {
             {email.body}
          </p>
          <button onClick={onBack}>Back</button>
-         <button onClick={onRemoveEmail}>X</button>
+         <button onClick={onRemove}>X</button>
 
     </section>)
     

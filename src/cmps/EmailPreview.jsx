@@ -3,9 +3,9 @@ import { utilService } from "../services/util.service"
 
 
 export function EmailPreview({ email }) {
-  const params = useParams()
+  const {folder} = useParams()
   return (      
-      <Link className="email-preview" to={`/email/${params.folder}/${email.id}`} >
+      <Link className="email-preview" to={`/email/${ folder}/${email.id}`} >
         <div>
           {`From: ${email.from}`}
         </div>

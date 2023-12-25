@@ -2,7 +2,8 @@ import { EmailPreview } from "./EmailPreview";
 import { EmailAction } from "./EmailAciton";
 
 export function EmailList({ emails ,onUpdateEmail}) {
-
+     
+     console.log('RenderEmailList')
      return (
           <ul className="email-list">
 
