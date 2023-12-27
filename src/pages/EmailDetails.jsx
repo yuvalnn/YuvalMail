@@ -2,6 +2,7 @@ import {  useNavigate,useParams,useOutletContext } from "react-router"
 import { useEffect, useState } from "react"
 import { emailService } from "../services/email.service"
 import { utilService } from "../services/util.service"
+import { eventBusService, showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
 
 
 export function EmailDetails({}) {
@@ -9,6 +10,7 @@ export function EmailDetails({}) {
     const params = useParams()
     const navigate = useNavigate()
     const { onRemoveEmail } = useOutletContext()
+    
 
     console.log(params)
 
@@ -54,8 +56,11 @@ export function EmailDetails({}) {
           try {
              /*  await onRemoveEmail(params.emailId)  */
                await emailService.remove(params.emailId)
-              navigate(`/email/${params.folder}`)                 
-          } catch (error) {
+              showSuccessMsg('The email was successfully removed')
+              navigate(`/email/${params.folder}`)    
+
+          } catch (error) { 
+            showErrorMsg('Failed to remove the email. Please try again')
             console.log('Had issues delete email', err);
           }
     }

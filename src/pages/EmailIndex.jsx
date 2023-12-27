@@ -4,6 +4,7 @@ import { EmailList } from "../cmps/EmailList"
 import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailFolderList } from "../cmps/EmailFolderList"
 import { Link, Outlet, useParams, useSearchParams } from "react-router-dom"
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
 
 
 export function EmailIndex() {
@@ -70,7 +71,7 @@ export function EmailIndex() {
   async function onAddEmail(emailToAdd) {
     try {
       const savedEmail = await emailService.save(emailToAdd)
-
+      showSuccessMsg('The email was sent successfully.')
       if (folder === 'sent' ||
         (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
         setEmails((prevEmails) => [savedEmail, ...prevEmails])
@@ -81,6 +82,7 @@ export function EmailIndex() {
       //setEmails((prevEmails) => [...prevEmails.sort((a, b) => b.sentAt - a.sentAt)]);
     }
     catch (error) {
+      showErrorMsg('Failed to send the email. Please check your connection and try again')
       console.log('Had issues saving email', error);
     }
   }

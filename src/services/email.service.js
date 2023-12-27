@@ -67,7 +67,8 @@ async function queryEmails(filterBy) {
     }
 
     // sort emails by title 
-    if (filterBy.isBySubject){
+    
+    if (filterBy.isBySubject){      
       emails.sort((a, b) => a.subject.localeCompare(b.subject));
     }
 

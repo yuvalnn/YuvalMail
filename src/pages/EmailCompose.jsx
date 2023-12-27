@@ -19,7 +19,7 @@ const navigate = useNavigate()
         ev.preventDefault()
 
         try {
-           await onAddEmail(email)
+           await onAddEmail(email)           
            navigate(`/email/${folder}`) 
         } catch (error) {
             

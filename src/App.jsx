@@ -8,6 +8,8 @@ import { EmailIndex } from './pages/EmailIndex';
 import { EmailDetails } from './pages/EmailDetails';
 import { EmailCompose } from './pages/EmailCompose';
 import { EmailFolderList } from './cmps/EmailFolderList';
+import { UserMsg } from './cmps/UserMsg';
+
 
 export function App() {
 
@@ -29,6 +31,7 @@ export function App() {
                 </Routes>
                 
             </section>
+            <UserMsg />
             <AppFooter />
             
         </Router>
