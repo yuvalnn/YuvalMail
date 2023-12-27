@@ -30,6 +30,62 @@
 .isNotRead {
   font-weight: bold;
 }
+
+.filter-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+#dateFilterButton {
+  /* padding: 10px; */
+  cursor: pointer;
+  position: relative;
+  padding-left: 30px;
+}
+
+#dateFilterButton::after {
+  content: '';
+  border: 6px solid transparent;
+  border-bottom: 6px solid black; /* Arrow color */
+  display: inline-block;
+  position: absolute;
+  /* right: 10px; */ /* Adjust as needed */
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s;
+}
+
+#dateFilterButton.is-descending::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+
+#subjectFilterButton {
+  /* padding: 10px; */
+  cursor: pointer;
+  position: relative;
+  padding-left: 30px;
+}
+
+#subjectFilterButton::after {
+  content: '';
+  border: 6px solid transparent;
+  border-bottom:  6px solid black; /* Arrow color */
+  display: inline-block;
+  position: absolute;
+  /* right: 10px; */ /* Adjust as needed */
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s;
+}
+
+#subjectFilterButton.is-by-subject::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
 /* 
 li {
   position: relative;

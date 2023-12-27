@@ -15,7 +15,9 @@ export function EmailFolderList({ folders, filterBy, onSetFilter }) {
    }
  */
 
-   //const { status } = filterByToEdit
+
+   console.log('folder',folders)
+
    return (
       <ul className="folders-list">
          {/* 
@@ -24,6 +26,7 @@ export function EmailFolderList({ folders, filterBy, onSetFilter }) {
                className={folder.status === filterBy.status ? 'selected' : ''}
             > 
             {folder.status}</li>)} */}
+          
          {folders.map(folder => <li key={folder.id}> <Link  to={`/email/${folder.status}`}>{folder.title}</Link></li>
          )}
 

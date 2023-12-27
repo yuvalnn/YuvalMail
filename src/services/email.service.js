@@ -9,7 +9,8 @@ export const emailService = {
   createEmail,
   getDefaultFilter,
   getLoggedinUser,
-  queryFolders
+  queryFolders,
+  getFilterFromParams
 
 }
 
@@ -59,7 +60,20 @@ async function queryEmails(filterBy) {
       });
     }
     // Sort emails by sentAt in descending order (newer to older)
-    emails.sort((a, b) => b.sentAt - a.sentAt);
+    if (filterBy.isDescending){    
+      emails.sort((a, b) => b.sentAt - a.sentAt);
+    }else{      
+      emails.sort((a, b) => a.sentAt - b.sentAt);
+    }
+
+    // sort emails by title 
+    if (filterBy.isBySubject){
+      emails.sort((a, b) => a.subject.localeCompare(b.subject));
+    }
+
+
+    
+    
     return emails
 }
 
@@ -100,8 +114,23 @@ function getDefaultFilter() {
     return {
         status: 'inbox',
         txt: '', 
-        isRead: null
+        isRead: null,
+        isDescending: true,
+        isBySubject: false
+        
     }
+}
+
+function getFilterFromParams(searchParams,folder){
+const deafultFilter = getDefaultFilter()
+const filterBy= {}
+for (const field in deafultFilter ){ 
+
+      filterBy[field]  = field === 'status' ? folder : searchParams.get(field) || deafultFilter[field]  
+}
+
+return filterBy
+
 }
 
 function _createEmailFolderList() {

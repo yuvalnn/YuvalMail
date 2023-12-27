@@ -13,31 +13,41 @@ export function EmailFilter({ filterBy, onSetFilter }) {
 
     function handleChange(ev) {
         let { name: field, value } = ev.target
-
+        console.log(field, value)
+        // just for the isRead filter
+        if (field === 'isRead' && value === '') {
+            value = null
+        }
         const fieldValue = value === "true" ? true : value === "false" ? false : value;
 
         setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: fieldValue }));
     }
 
 
-    //const { txt, isRead } = filterByToEdit
-    const isReadValue = filterBy.isRead === null ? '' : filterBy.isRead;
+    const { txt ,isDescending, isBySubject} = filterByToEdit
+    const isReadValue = filterBy.isRead === null ? '' : filterByToEdit.isRead;
     return (
 
         <section className="email-filter">
 
             <div>
                 <label htmlFor="txt">Search</label>
-                <input onChange={handleChange} id="txt" value={filterBy.txt} name="txt" type="text" />
+                <input onChange={handleChange} id="txt" value={txt} name="txt" type="text" />
             </div>
 
-            <div>
+            <div className="filter-container">
+                <button className={isDescending ? "is-descending" : ""} id="dateFilterButton" value={!isDescending} name = "isDescending" onClick={handleChange}>Date</button> 
+                <button className={isBySubject ? "is-by-subject" : ""} id="subjectFilterButton" value={!isBySubject} name = "isBySubject" onClick={handleChange}>Subject</button> 
                 <select id="isRead" name="isRead" value={isReadValue} onChange={handleChange}>
                     <option value=''>All</option>
                     <option value="true">Read</option>
                     <option value="false">Unread</option>
                 </select>
+
+                 
             </div>
+
+          
 
 
         </section>
