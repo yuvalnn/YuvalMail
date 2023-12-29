@@ -5,6 +5,7 @@ import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailFolderList } from "../cmps/EmailFolderList"
 import { Link, Outlet, useParams, useSearchParams } from "react-router-dom"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
+import { EmailCompose } from "./EmailCompose"
 
 
 export function EmailIndex() {
@@ -13,11 +14,11 @@ export function EmailIndex() {
   const { emailId, folder } = useParams()
   const [emails, setEmails] = useState(null)
   const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams,folder))
-  
   /* const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter()) */
   const [folders, setFolder] = useState(null)
 
-
+  // Compose init
+  
   useEffect(() => {
     // Sanitize the filterBy object
     const sanitizedFilterBy = {
@@ -33,6 +34,11 @@ export function EmailIndex() {
     LoadFolders()
   }, [filterBy, folder])
 
+  function onSetCompose(ev){    
+    let { name: field, value } = ev.target      
+    const updatedSearchParams = {  [field]: value, ...filterBy };
+    setSearchParams(updatedSearchParams)
+  }
 
   async function LoadFolders() {
     try {
@@ -63,6 +69,11 @@ export function EmailIndex() {
       const savedEmail = await emailService.save(emailToUpdate)
       setEmails((prevEmails) =>
         prevEmails.map(email => email.id === savedEmail.id ? savedEmail : email))
+        /* filter */
+        if (folder === 'star'){          
+          setEmails((prevEmails) => 
+          prevEmails.filter(email => email.isStarred ))
+        }
     } catch (error) {
       console.log(error)
     }
@@ -76,10 +87,6 @@ export function EmailIndex() {
         (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
         setEmails((prevEmails) => [savedEmail, ...prevEmails])
       }
-
-      //LoadEmails(emails)
-      // Sort emails by sentAt in descending order (newer to older)
-      //setEmails((prevEmails) => [...prevEmails.sort((a, b) => b.sentAt - a.sentAt)]);
     }
     catch (error) {
       showErrorMsg('Failed to send the email. Please check your connection and try again')
@@ -99,11 +106,12 @@ export function EmailIndex() {
   if (!(emails)) return <div>Loading...</div>
   console.log("renderagain")
 
-  const { status, txt, isRead, isDescending,isBySubject } = filterBy
-
+  const { status, txt, isRead, isDescending,isBySubject} = filterBy
   return (
     <section className="email-index">
-      <Link to={`/email/${folder}/compose`}><button>Compose</button></Link>
+      { searchParams.get('compose') ==='new' && <EmailCompose onAddEmail={onAddEmail} folder={folder} onSetFilter={onSetFilter} filterBy={filterBy}   />}
+      {/* <Link to={`/email/${folder}/compose`}><button>Compose</button></Link> */}
+      <button id="compose" value={'new'} name = "compose" onClick={onSetCompose}>Compose</button>
       <EmailFolderList folders={folders} filterBy={{ status }} onSetFilter={onSetFilter} />
       {!emailId && <div>
         <EmailFilter filterBy={{ txt, isRead, isDescending,isBySubject }} onSetFilter={onSetFilter} />

@@ -1,13 +1,13 @@
 
 import { useEffect, useState } from "react"
 import { emailService } from "../services/email.service"
-import { Link,useNavigate, useOutletContext } from "react-router-dom"
+import { Link,useNavigate, useOutletContext, useParams, useSearchParams } from "react-router-dom"
 
-
-export function EmailCompose() {
+export function EmailCompose({onAddEmail , folder}) {
 
 const [email, setEmail] = useState(emailService.createEmail())
-const {onAddEmail ,folder} = useOutletContext()
+const params  = useParams()
+/* const {onAddEmail ,folder} = useOutletContext() */
 const navigate = useNavigate()
       
 
@@ -19,8 +19,15 @@ const navigate = useNavigate()
         ev.preventDefault()
 
         try {
-           await onAddEmail(email)           
-           navigate(`/email/${folder}`) 
+           await onAddEmail(email) 
+           if (params.emailId){
+            navigate(`/email/${folder}/${params.emailId}`) 
+           }
+           else{
+            navigate(`/email/${folder}`) 
+           }
+          /*  onSetfilter((filterBy) => ({ ...filterBy, ['compose']: '' }));  */     
+           
         } catch (error) {
             
             console.log('Had issues saving email', error);
@@ -57,7 +64,7 @@ const navigate = useNavigate()
                 <input value={body} onChange={handleChange}
                     type="text" id="body" name="body" />
                   <button>Send</button>
-                <Link to={`/email/${folder}`}><button className="close-btn">X </button></Link>
+                <Link to={params.emailId ? `/email/${folder}/${params.emailId}`: `/email/${folder}`}><button className="close-btn">X </button></Link>
 
             </form>
         </div>
