@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 
 export function EmailFolderList({ folders, filterBy, onSetFilter }) {
    const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
+   const [searchParams,setSearchParams] = useSearchParams()
 
 /*    useEffect(() => {
       onSetFilter(filterByToEdit)
@@ -15,7 +16,7 @@ export function EmailFolderList({ folders, filterBy, onSetFilter }) {
    }
  */
 
-
+   
    console.log('folder',folders)
 
    return (
@@ -25,9 +26,12 @@ export function EmailFolderList({ folders, filterBy, onSetFilter }) {
             <li key={folder.id} onClick={() => handleChange(folder.status, "status")}
                className={folder.status === filterBy.status ? 'selected' : ''}
             > 
-            {folder.status}</li>)} */}
+               {folder.status}</li>)} */}
           
-         {folders.map(folder => <li key={folder.id}> <Link  to={`/email/${folder.status}`}>{folder.title}</Link></li>
+         {folders.map(folder => 
+         <li key={folder.id}> <Link  
+         to={`/email/${folder.status}`}>{folder.title}
+         </Link></li>
          )}
 
       </ul>

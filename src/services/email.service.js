@@ -52,6 +52,10 @@ async function queryEmails(filterBy) {
           if (status ==='star') {
             statusFolder = email.isStarred;
           }
+           if (status ==='draft'){
+            
+            statusFolder = !email.sentAt; 
+          } 
         /*   if (status ==='trash'){
             statusFolder 
           } */
@@ -59,8 +63,8 @@ async function queryEmails(filterBy) {
           return isMatch && isReadMatch &&  statusFolder ;
       });
     }
-    // Sort emails by sentAt in descending order (newer to older)
-    if (filterBy.isDescending){    
+    // Sort emails by sentAt in descending order (newer to older)    
+    if (filterBy.isDescending && filterBy.status != 'draft'){    
       emails.sort((a, b) => b.sentAt - a.sentAt);
     }else{      
       emails.sort((a, b) => a.sentAt - b.sentAt);
@@ -68,12 +72,10 @@ async function queryEmails(filterBy) {
 
     // sort emails by title 
     
-    if (filterBy.isBySubject){      
+    if (filterBy.isBySubject && filterBy.status != 'draft'){      
       emails.sort((a, b) => a.subject.localeCompare(b.subject));
     }
 
-
-    
     
     return emails
 }
@@ -96,7 +98,7 @@ function save(emailToSave) {
 }
 
 function createEmail(subject = '', body = '', isRead = false,
-                     isStarred = false, sentAt=Date.now(), 
+                     isStarred = false, sentAt= null, 
                      removedAt=  null, from ='' ,
                      to= '') {
     return {
@@ -159,6 +161,11 @@ function _createEmailFolderList() {
           id: 'f104',
           title: 'Trash',
           status: 'trash'
+         },
+         {
+          id: 'f105',
+          title: 'Draft',
+          status: 'draft'
          }
 
        ]
