@@ -7,7 +7,7 @@ export function EmailPreview({ email }) {
   return (    
         <section className="email-preview">
           { folder==='draft' ? 
-          (<Link  to={`/email/${ folder}/?compose=${email.id}`} >
+          (<Link className="email-preview" to={`/email/${ folder}/?compose=${email.id}`} >
           <div>
             {`From: ${email.from}`}
           </div>
@@ -18,7 +18,7 @@ export function EmailPreview({ email }) {
             {`${utilService.formatTimestampToMonthDay(email.sentAt)}`}
           </div>
         </Link>) : 
-         (<Link  to={`/email/${ folder}/${email.id}`} >
+         (<Link className="email-preview" to={`/email/${ folder}/${email.id}`} >
          <div>
            {`From: ${email.from}`}
          </div>
