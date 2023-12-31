@@ -11,36 +11,41 @@ import { EmailCompose } from "./EmailCompose"
 export function EmailIndex() {
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const {emailId, folder } = useParams()
+  const { emailId, folder } = useParams()
   const [emails, setEmails] = useState(null)
   const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams, folder))  
-  /* const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter()) */
   const [folders, setFolder] = useState(null)
 
-  // Compose init
-
   useEffect(() => {
-    // Sanitize the filterBy object    
-    const sanitizedFilterBy = {
-      ...Object.fromEntries(
-        Object.entries(filterBy).filter(([key, value]) => value !== '' && key !== 'status' && value !== 'null')
-      ),
-    };
-
-    setSearchParams(sanitizedFilterBy)
+    initSearchParams()
     filterBy.status = folder;
-    LoadEmails()
-    console.log('loadfolders')
+    LoadEmails()    
     LoadFolders()
   }, [filterBy, folder])
 
+  function initSearchParams() {
+     // Sanitize the filterBy object    
+    let sanitizedFilterBy = {
+      ...Object.fromEntries(
+        Object.entries(filterBy).filter(([key, value]) => value !== '' && key !== 'status' && value !== 'null')
+      ),
+    };  
+    const field = 'compose'
+    const value = searchParams.get(field)
+    if (value){
+      sanitizedFilterBy= { ['compose']: value, ...sanitizedFilterBy } 
+    }
+    setSearchParams(sanitizedFilterBy)    
+  }
+
   function onCompose(ev) {
-    let { name: field, value } = ev.target    
+    let { name: field, value } = ev.target
     const updatedSearchParams = { [field]: value, ...filterBy };
     // Sanitize the filterBy object
     const sanitizedFilterBy = {
-    ...Object.fromEntries(
-    Object.entries(updatedSearchParams).filter(([key, value]) => value !== '' && key !== 'status' && value !== 'null')),};          
+      ...Object.fromEntries(
+        Object.entries(updatedSearchParams).filter(([key, value]) => value !== '' && key !== 'status' && value !== 'null')),
+    };    
     setSearchParams(sanitizedFilterBy)
   }
 
@@ -83,63 +88,97 @@ export function EmailIndex() {
     }
   }
 
-  //   async function onDraftEmail(email) {
-  //     try {
-  //       debugger
-
-
-  //     } catch (err) {
-  //         console.log('onDraftEmail:Had issues update email', err);
-  //     }
-  // }
-
-  async function onAddEmail(emailToAdd) {
+  async function saveEmail(emailToSave) {
     try {
-      // New email
+      const savedEmail = await emailService.save(emailToSave)  
+      if (folder === 'sent' ||
+        (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
+        setEmails((prevEmails) => [savedEmail, ...prevEmails])
+      }
+      if (folder === 'draft' && !emailToSave.sentAt) {
+        setEmails((prevEmails) => [savedEmail, ...prevEmails])
+      }     
+      if (emailToSave.sentAt){
+        showSuccessMsg('The email was sent successfully.')  
+      }
+      else{                        
+        const updatedSearchParams = { 'compose': savedEmail.id, ...filterBy };           
+        setSearchParams(updatedSearchParams)          
+        showSuccessMsg('Draft saved')
+      }               
+    } catch (error) {
+      if (emailToSave.sentAt)
+      {
+        showErrorMsg('Failed to send the email. Please check your connection and try again')
+      }else
+      {
+        showErrorMsg('Failed to save draft of the email. Please check your connection and try again')
+      }      
+      console.log('EmailIndex:saveEmail():Had issues saving email', error);
       
-      if (searchParams.get('compose') === 'new') {
-        const savedEmail = await emailService.save(emailToAdd)
+    }
+  }
+   
+  async function updateEmail(emailtoAdd) {
+    try {      
+      let emailTosave = await emailService.getById(searchParams.get('compose'))
+      emailTosave = { ...emailTosave, ...emailtoAdd}
+      const savedEmail = await emailService.save(emailTosave)            
+      if (folder === 'sent' ||
+        (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
+        setEmails((prevEmails) => [savedEmail, ...prevEmails])
+      }
+      if (folder === 'draft') {
+        if (!savedEmail.sentAt) {
+          setEmails((prevEmails) =>
+            prevEmails.map(email => (email.id === savedEmail.id) ? savedEmail : email))
+        }
+        else {
+          setEmails((prevEmails) =>
+            prevEmails.filter(email => email.id === savedEmail.id ? !savedEmail.sentAt : !email.sentAt))
+        }
+      }
+      if (emailtoAdd.sentAt){
+        showSuccessMsg('The email was sent successfully.')  
+      }
+      else{
+
         showSuccessMsg('Draft saved')
-        if (folder === 'sent' ||
-          (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
-          setEmails((prevEmails) => [savedEmail, ...prevEmails])
-        }
-        if (folder === 'draft') {
-          setEmails((prevEmails) => [savedEmail, ...prevEmails])
-        }
-        const updatedSearchParams = { 'compose': savedEmail.id, ...filterBy };
-        setSearchParams(updatedSearchParams)
       }
-      else {  // Draft      
-        let emailTosave = await emailService.getById(searchParams.get('compose'))
-        emailTosave = { ...emailTosave, ...emailToAdd }
-        const savedEmail = await emailService.save(emailTosave)
-        showSuccessMsg('Draft saved')
-        if (folder === 'sent' ||
-          (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
-          setEmails((prevEmails) => [savedEmail, ...prevEmails])
-        }
-        if (folder === 'draft') {         
-          if(!savedEmail.sentAt){            
-            setEmails((prevEmails) =>
-            prevEmails.map(email => (email.id === savedEmail.id) ? savedEmail : email))            
-          }
-          else
-          {
-            setEmails((prevEmails) =>
-            prevEmails.filter(email => email.id === savedEmail.id ? !savedEmail.sentAt : !email.sentAt  ))
-          }
-        }
-      }
-      if (emailToAdd.sentAt) {
-        showSuccessMsg('The email was sent successfully.')
-      }
+    } catch (error) {
+      if (emailtoAdd.sentAt)
+      {
+        showErrorMsg('Failed to send the email. Please check your connection and try again')
+      }else
+      {
+        showErrorMsg('Failed to save draft of the email. Please check your connection and try again')
+      }      
+      console.log('EmailIndex:updateEmail():Had issues saving email', error);
+    }
+  }
+
+  // Draft Email  
+  function onDratEmail(emailToadd) {
+
+    if (searchParams.get('compose') === 'new') {      
+         saveEmail(emailToadd)
+    }else
+    {    // Draft
+        updateEmail(emailToadd)
+    }
 
     }
-    catch (error) {
-      showErrorMsg('Failed to send the email. Please check your connection and try again')
-      console.log('Had issues saving email', error);
-    }
+  
+  // Send Email 
+  function onAddEmail(emailToAdd) {
+   
+      // New email
+      if (searchParams.get('compose') === 'new') {      
+        saveEmail(emailToAdd)
+      }
+      else {  // Update    
+        updateEmail(emailToAdd) 
+      }                 
   }
 
   async function onRemoveEmail(emailId) {
@@ -156,10 +195,10 @@ export function EmailIndex() {
   const { status, txt, isRead, isDescending, isBySubject } = filterBy
   return (
     <section className="email-index">
-      {(searchParams.get('compose') != null) && <EmailCompose onAddEmail={onAddEmail} folder={folder}  />}
+      {(searchParams.get('compose') != null) && <EmailCompose onAddEmail={onAddEmail} folder={folder} onDratEmail={onDratEmail} />}
       {/* <Link to={`/email/${folder}/compose`}><button>Compose</button></Link> */}
       <button id="compose" value={'new'} name="compose" onClick={onCompose}>Compose</button>
-      <EmailFolderList folders={folders} filterBy={{ status }} onSetFilter={onSetFilter} />
+      <EmailFolderList folders={folders}/>
       {emails.length === 0 && folder === 'draft' ? (
         <div>Loading...</div>
       ) : (
