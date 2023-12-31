@@ -13,40 +13,38 @@ export function EmailIndex() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { emailId, folder } = useParams()
   const [emails, setEmails] = useState(null)
-  const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams, folder))  
+  const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams, folder))
   const [folders, setFolder] = useState(null)
 
   useEffect(() => {
     initSearchParams()
     filterBy.status = folder;
-    LoadEmails()    
+    LoadEmails()
     LoadFolders()
   }, [filterBy, folder])
 
   function initSearchParams() {
-     // Sanitize the filterBy object    
-    let sanitizedFilterBy = {
+    // Sanitize the filterBy object    
+    let sanitizedSearchParams = {
       ...Object.fromEntries(
         Object.entries(filterBy).filter(([key, value]) => value !== '' && key !== 'status' && value !== 'null')
       ),
-    };  
-    const field = 'compose'
-    const value = searchParams.get(field)
-    if (value){
-      sanitizedFilterBy= { ['compose']: value, ...sanitizedFilterBy } 
+    }        
+    if (searchParams.get('compose')) {
+      sanitizedSearchParams = { ['compose']: searchParams.get('compose'), ...sanitizedSearchParams }
     }
-    setSearchParams(sanitizedFilterBy)    
+    setSearchParams(sanitizedSearchParams)
   }
 
   function onCompose(ev) {
     let { name: field, value } = ev.target
     const updatedSearchParams = { [field]: value, ...filterBy };
     // Sanitize the filterBy object
-    const sanitizedFilterBy = {
+    const sanitizedSearchParams = {
       ...Object.fromEntries(
         Object.entries(updatedSearchParams).filter(([key, value]) => value !== '' && key !== 'status' && value !== 'null')),
-    };    
-    setSearchParams(sanitizedFilterBy)
+    };
+    setSearchParams(sanitizedSearchParams)
   }
 
   async function LoadFolders() {
@@ -90,40 +88,38 @@ export function EmailIndex() {
 
   async function saveEmail(emailToSave) {
     try {
-      const savedEmail = await emailService.save(emailToSave)  
+      const savedEmail = await emailService.save(emailToSave)
       if (folder === 'sent' ||
         (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
         setEmails((prevEmails) => [savedEmail, ...prevEmails])
       }
       if (folder === 'draft' && !emailToSave.sentAt) {
         setEmails((prevEmails) => [savedEmail, ...prevEmails])
-      }     
-      if (emailToSave.sentAt){
-        showSuccessMsg('The email was sent successfully.')  
       }
-      else{                        
-        const updatedSearchParams = { 'compose': savedEmail.id, ...filterBy };           
-        setSearchParams(updatedSearchParams)          
+      if (emailToSave.sentAt) {
+        showSuccessMsg('The email was sent successfully.')
+      }
+      else {
+        const updatedSearchParams = { 'compose': savedEmail.id, ...filterBy };
+        setSearchParams(updatedSearchParams)
         showSuccessMsg('Draft saved')
-      }               
+      }
     } catch (error) {
-      if (emailToSave.sentAt)
-      {
+      if (emailToSave.sentAt) {
         showErrorMsg('Failed to send the email. Please check your connection and try again')
-      }else
-      {
+      } else {
         showErrorMsg('Failed to save draft of the email. Please check your connection and try again')
-      }      
+      }
       console.log('EmailIndex:saveEmail():Had issues saving email', error);
-      
+
     }
   }
-   
+
   async function updateEmail(emailtoAdd) {
-    try {      
+    try {
       let emailTosave = await emailService.getById(searchParams.get('compose'))
-      emailTosave = { ...emailTosave, ...emailtoAdd}
-      const savedEmail = await emailService.save(emailTosave)            
+      emailTosave = { ...emailTosave, ...emailtoAdd }
+      const savedEmail = await emailService.save(emailTosave)
       if (folder === 'sent' ||
         (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
         setEmails((prevEmails) => [savedEmail, ...prevEmails])
@@ -138,21 +134,19 @@ export function EmailIndex() {
             prevEmails.filter(email => email.id === savedEmail.id ? !savedEmail.sentAt : !email.sentAt))
         }
       }
-      if (emailtoAdd.sentAt){
-        showSuccessMsg('The email was sent successfully.')  
+      if (emailtoAdd.sentAt) {
+        showSuccessMsg('The email was sent successfully.')
       }
-      else{
+      else {
 
         showSuccessMsg('Draft saved')
       }
     } catch (error) {
-      if (emailtoAdd.sentAt)
-      {
+      if (emailtoAdd.sentAt) {
         showErrorMsg('Failed to send the email. Please check your connection and try again')
-      }else
-      {
+      } else {
         showErrorMsg('Failed to save draft of the email. Please check your connection and try again')
-      }      
+      }
       console.log('EmailIndex:updateEmail():Had issues saving email', error);
     }
   }
@@ -160,25 +154,24 @@ export function EmailIndex() {
   // Draft Email  
   function onDratEmail(emailToadd) {
 
-    if (searchParams.get('compose') === 'new') {      
-         saveEmail(emailToadd)
-    }else
-    {    // Draft
-        updateEmail(emailToadd)
+    if (searchParams.get('compose') === 'new') {
+      saveEmail(emailToadd)
+    } else {    // Draft
+      updateEmail(emailToadd)
     }
 
-    }
-  
+  }
+
   // Send Email 
   function onAddEmail(emailToAdd) {
-   
-      // New email
-      if (searchParams.get('compose') === 'new') {      
-        saveEmail(emailToAdd)
-      }
-      else {  // Update    
-        updateEmail(emailToAdd) 
-      }                 
+
+    // New email
+    if (searchParams.get('compose') === 'new') {
+      saveEmail(emailToAdd)
+    }
+    else {  // Update    
+      updateEmail(emailToAdd)
+    }
   }
 
   async function onRemoveEmail(emailId) {
@@ -198,14 +191,14 @@ export function EmailIndex() {
       {(searchParams.get('compose') != null) && <EmailCompose onAddEmail={onAddEmail} folder={folder} onDratEmail={onDratEmail} />}
       {/* <Link to={`/email/${folder}/compose`}><button>Compose</button></Link> */}
       <button id="compose" value={'new'} name="compose" onClick={onCompose}>Compose</button>
-      <EmailFolderList folders={folders}/>
+      <EmailFolderList folders={folders} />
       {emails.length === 0 && folder === 'draft' ? (
         <div>Loading...</div>
-      ) : (
-        !emailId && <div>
-          <EmailFilter filterBy={{ txt, isRead, isDescending, isBySubject }} onSetFilter={onSetFilter} />
+      ) : ( <>      
+          <EmailFilter filterBy={{ txt, isRead, isDescending, isBySubject }} onSetFilter={onSetFilter} />          
           <EmailList emails={emails} onUpdateEmail={onUpdateEmail} />
-        </div>)}
+          </>        
+        )}
       <Outlet context={{ test: "yuval", folders, onSetFilter, folder: folder, onRemoveEmail }} />
     </section>
   )
