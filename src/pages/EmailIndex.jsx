@@ -15,14 +15,24 @@ export function EmailIndex() {
   const [emails, setEmails] = useState(null)
   const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams, folder))
   const [folders, setFolder] = useState(null)
+  const [unreadCount, setunreadCount]  = useState()
 
   useEffect(() => {
+    getUnreadCount()
     initSearchParams()
     filterBy.status = folder;
     LoadEmails()
     LoadFolders()
   }, [filterBy, folder])
 
+  async function getUnreadCount() {
+    try {
+      const unreadCount = await emailService.queryUnreadCount();
+      setunreadCount(unreadCount)            
+    } catch (error) {
+      console.error('getUnreadCount():', error);      
+    }
+  }
   function initSearchParams() {
     // Sanitize the filterBy object    
     let sanitizedSearchParams = {
@@ -36,6 +46,11 @@ export function EmailIndex() {
     setSearchParams(sanitizedSearchParams)
   }
 
+   function onReadMail(changeAmount){
+
+    setunreadCount(prevUnreadCount => prevUnreadCount + changeAmount)
+          
+   }  
   function onCompose(ev) {
     let { name: field, value } = ev.target
     const updatedSearchParams = { [field]: value, ...filterBy };
@@ -87,10 +102,11 @@ export function EmailIndex() {
   }
 
   async function saveEmail(emailToSave) {
-    try {
+    try {      
       const savedEmail = await emailService.save(emailToSave)
-      if (folder === 'sent' ||
-        (savedEmail.to === emailService.getLoggedinUser().email && folder === 'inbox')) {
+      if (((folder === 'sent' && savedEmail.from === emailService.getLoggedinUser().email) ||
+         (folder === 'inbox' && savedEmail.from === emailService.getLoggedinUser().email)) &&        
+        emailToSave.sentAt) {
         setEmails((prevEmails) => [savedEmail, ...prevEmails])
       }
       if (folder === 'draft' && !emailToSave.sentAt) {
@@ -134,7 +150,8 @@ export function EmailIndex() {
             prevEmails.filter(email => email.id === savedEmail.id ? !savedEmail.sentAt : !email.sentAt))
         }
       }
-      if (emailtoAdd.sentAt) {
+      if (emailtoAdd.sentAt) {   
+             
         showSuccessMsg('The email was sent successfully.')
       }
       else {
@@ -188,18 +205,18 @@ export function EmailIndex() {
   const { status, txt, isRead, isDescending, isBySubject } = filterBy
   return (
     <section className="email-index">
-      {(searchParams.get('compose') != null) && <EmailCompose onAddEmail={onAddEmail} folder={folder} onDratEmail={onDratEmail} />}
+      {(searchParams.get('compose') != null) && <EmailCompose onAddEmail={onAddEmail} folder={folder} onDratEmail={onDratEmail}  onReadMail={onReadMail}/>}
       {/* <Link to={`/email/${folder}/compose`}><button>Compose</button></Link> */}
       <button id="compose" value={'new'} name="compose" onClick={onCompose}>Compose</button>
-      <EmailFolderList folders={folders} />
+      <EmailFolderList folders={folders} unreadCount={unreadCount} />
       {emails.length === 0 && folder === 'draft' ? (
         <div>Loading...</div>
-      ) : ( <>      
+      ) : ( !emailId  &&   <> 
           <EmailFilter filterBy={{ txt, isRead, isDescending, isBySubject }} onSetFilter={onSetFilter} />          
           <EmailList emails={emails} onUpdateEmail={onUpdateEmail} />
           </>        
         )}
-      <Outlet context={{ test: "yuval", folders, onSetFilter, folder: folder, onRemoveEmail }} />
+      <Outlet context={{ test: "yuval", folders, onSetFilter, folder: folder, onRemoveEmail, onReadMail }} />
     </section>
   )
 } 

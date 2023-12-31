@@ -10,7 +10,8 @@ export const emailService = {
   getDefaultFilter,
   getLoggedinUser,
   queryFolders,
-  getFilterFromParams
+  getFilterFromParams,
+  queryUnreadCount
 
 }
 
@@ -33,17 +34,27 @@ async function queryFolders() {
   return folders
 }
 
+async function queryUnreadCount() {
+  const emails = await storageService.query(EMAIL_KEY);
+  
+  const unreadCount = emails.reduce((count, email) => {
+    return count + (email.isRead ? 0 : 1);
+  }, 0);
+
+  return unreadCount;
+}
+
 
 async function queryEmails(filterBy) {
     let emails = await storageService.query(EMAIL_KEY)
     if (filterBy) {
-        const { status, txt, isRead } = filterBy;
-        const regexTxtTerm = new RegExp(txt, 'i');
-        let statusFolder;
+        const { status, txt, isRead } = filterBy
+        const regexTxtTerm = new RegExp(txt, 'i')        
         emails = emails.filter(email => {
           const isMatch = regexTxtTerm.test(email.body); //txt filter
-          const isReadMatch = typeof isRead === 'boolean' ? email.isRead === isRead : true; //Select filter
-          if (status === 'inbox'){
+          const isReadMatch = typeof isRead === 'boolean' ? email.isRead === isRead : true; //Select filter     
+          let statusFolder  = false
+          if (status === 'inbox'  && email.sentAt){
             statusFolder = (email.to===getLoggedinUser().email);
           } 
           if (status ==='sent') {

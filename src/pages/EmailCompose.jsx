@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { emailService } from "../services/email.service"
 import { Link, useNavigate, useOutletContext, useParams, useSearchParams } from "react-router-dom"
 
-export function EmailCompose({ onAddEmail, folder, onDratEmail }) {
+export function EmailCompose({ onAddEmail, folder, onDratEmail, onReadMail }) {
     const [email, setEmail] = useState(emailService.createEmail())
     const params = useParams()
     const [searchParams, setSearchParams] = useSearchParams()    
@@ -30,9 +30,18 @@ export function EmailCompose({ onAddEmail, folder, onDratEmail }) {
 
     async function onSaveEmail(ev) {
         ev.preventDefault()
-        email.sentAt = Date.now()
+        email.sentAt = Date.now()        
+        if (email.to != emailService.getLoggedinUser().email) {
+            email.isRead = true            
+        }
+        else
+        {
+            email.isRead = false
+            onReadMail(1)            
+        }
         try {
-            await onAddEmail(email)
+            await onAddEmail(email)                                                
+
             if (params.emailId) {
                 navigate(`/email/${folder}/${params.emailId}`)
             }
@@ -45,6 +54,7 @@ export function EmailCompose({ onAddEmail, folder, onDratEmail }) {
     }
 
     function onSaveDratEmail(draftEmail) {
+        draftEmail.isRead = true
         if (clearTimeout) {
             clearTimeout(timeoutIdRef.current);
         }
