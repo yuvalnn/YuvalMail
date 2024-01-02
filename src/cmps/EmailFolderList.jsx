@@ -9,8 +9,9 @@ export function EmailFolderList({ folders, unreadCount}) {
          {folders.map(folder => 
          <li key={folder.id}> <Link  
          to={`/email/${folder.status}?${searchParams}`}>{folder.title}
+           {folder.status === 'inbox' && <div>{unreadCount}</div>}           
          </Link>
-          {folder.status === 'inbox' && <div>{unreadCount}</div>}</li>
+          </li>
          )}
       </ul>
    )

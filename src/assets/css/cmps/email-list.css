@@ -14,6 +14,9 @@
 .email-list .star-preview{
   align-self: center;
   background: #e96b9509;
+  margin-right: 0.5rem;
+  
+  
 }
 
 .email-list .star-preview.selected{

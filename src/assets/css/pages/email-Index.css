@@ -10,16 +10,7 @@
 
 }
 
-.folders-list{
-   display: flex;
-   flex-direction: column;
-   gap: 1rem;
-   grid-area: nav;
-   font-size: large;
-   border-top: 2px solid black;
-   align-items: start;
-   
-}
+
 
 .folders-list li {
 

@@ -20,7 +20,7 @@ export function EmailIndex() {
   useEffect(() => {
     getUnreadCount()
     initSearchParams()
-    filterBy.status = folder;
+    /* filterBy.status = folder; */
     LoadEmails()
     LoadFolders()
   }, [filterBy, folder])
@@ -74,7 +74,7 @@ export function EmailIndex() {
 
   async function LoadEmails() {
     try {
-      const emails = await emailService.queryEmails(filterBy)
+      const emails = await emailService.queryEmails({...filterBy, status : folder})
       console.log(emails)
       setEmails(emails)
     } catch (error) {
