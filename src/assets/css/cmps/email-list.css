@@ -15,6 +15,9 @@
   align-self: center;
   background: #e96b9509;
   margin-right: 0.5rem;
+  border-radius: 50%;
+  padding: 2px;
+  margin-left: 4px;
   
   
 }

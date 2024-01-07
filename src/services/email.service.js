@@ -110,7 +110,7 @@ function save(emailToSave) {
 
 function createEmail(subject = '', body = '', isRead = false,
                      isStarred = false, sentAt= null, 
-                     removedAt=  null, from ='' ,
+                     removedAt=  null, from =getLoggedinUser().email ,
                      to= '') {
     return {
               subject,

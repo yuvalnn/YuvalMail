@@ -7,11 +7,15 @@ export function EmailFolderList({ folders, unreadCount}) {
    return (
       <ul className="folders-list">          
          {folders.map(folder => 
-         <li key={folder.id}> <Link  
-         to={`/email/${folder.status}?${searchParams}`}>{folder.title}
-           {folder.status === 'inbox' && <div>{unreadCount}</div>}           
+         <li key={folder.id}>
+         <Link  
+         to={`/email/${folder.status}?${searchParams}`}>  
+           
+           {folder.title}
+           {folder.status === 'inbox' && <div>{unreadCount}</div>}                                         
          </Link>
-          </li>
+         </li> 
+                   
          )}
       </ul>
    )

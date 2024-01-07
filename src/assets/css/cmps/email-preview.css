@@ -18,13 +18,16 @@
 .email-preview a {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  
+  gap:1rem;
   height: 2rem;
 
 }
 
 .email-preview a div {
     align-self: center;  
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .email-preview:hover {

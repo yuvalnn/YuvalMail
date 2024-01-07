@@ -105,7 +105,7 @@ export function EmailIndex() {
     try {      
       const savedEmail = await emailService.save(emailToSave)
       if (((folder === 'sent' && savedEmail.from === emailService.getLoggedinUser().email) ||
-         (folder === 'inbox' && savedEmail.from === emailService.getLoggedinUser().email)) &&        
+         (folder === 'inbox' && savedEmail.to === emailService.getLoggedinUser().email)) &&        
         emailToSave.sentAt) {
         setEmails((prevEmails) => [savedEmail, ...prevEmails])
       }

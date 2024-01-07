@@ -6,8 +6,6 @@ import { AppFooter } from './cmps/AppFooter';
 import { AboutUs } from './pages/AboutUs';
 import { EmailIndex } from './pages/EmailIndex';
 import { EmailDetails } from './pages/EmailDetails';
-import { EmailCompose } from './pages/EmailCompose';
-import { EmailFolderList } from './cmps/EmailFolderList';
 import { UserMsg } from './cmps/UserMsg';
 
 

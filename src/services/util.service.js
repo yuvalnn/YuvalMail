@@ -26,6 +26,7 @@ function loadFromStorage(key, defaultValue = null) {
 
 
 function formatTimestampToMonthDay(timestamp) {
+    
     const date = new Date(timestamp);
 
     return new Intl.DateTimeFormat('en-US', {
